@@ -7,6 +7,7 @@ michael:
   admin: true
   activated: true
   activated_at: <%= Time.zone.now %>
+  unique_name: michael_example
 
 archer:
   name: Sterling Archer
@@ -14,6 +15,7 @@ archer:
   password_digest: <%= User.digest('password') %>
   activated: true
   activated_at: <%= Time.zone.now %>
+  unique_name: archer_example
 
 lana:
   name: Lana Kane
@@ -21,6 +23,7 @@ lana:
   password_digest: <%= User.digest('password') %>
   activated: true
   activated_at: <%= Time.zone.now %>
+  unique_name: lana_example
 
 malory:
   name: Malory Archer
@@ -28,6 +31,7 @@ malory:
   password_digest: <%= User.digest('password') %>
   activated: true
   activated_at: <%= Time.zone.now %>
+  unique_name: malory_example
 
 <% 30.times do |n| %>
 user_<%= n %>:
@@ -36,4 +40,5 @@ user_<%= n %>:
   password_digest: <%= User.digest('password') %>
   activated: true
   activated_at: <%= Time.zone.now %>
+  unique_name: <%= "#{n}_example" %>
 <% end %>
