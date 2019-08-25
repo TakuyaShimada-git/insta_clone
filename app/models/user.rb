@@ -86,10 +86,13 @@ class User < ApplicationRecord
 
 # ユーザーのステータスフィードを返す
   def feed
-    following_ids = "SELECT followed_id FROM relationships
-                     WHERE follower_id = :user_id"
-    Micropost.where("user_id IN (#{following_ids})
-                     OR user_id = :user_id", user_id: id)
+  # Railsチュートリアルの中で入れた下記のロジックは
+  # including_repliesメソッドに含まれているのでコメントアウト
+  # following_ids = "SELECT followed_id FROM relationships
+  #                  WHERE follower_id = :user_id"
+  # Micropost.where("user_id IN (#{following_ids})
+  #                  OR user_id = :user_id", user_id: id)
+    Micropost.including_replies(id)
   end
 
 
