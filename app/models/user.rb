@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   attr_accessor :remember_token, :activation_token, :reset_token
-  before_save   :downcase_email
+  before_save   :downcase_email, :downcase_unique_name
   before_create :create_activation_digest
 
   validates :name, presence: true, length: {maximum: 50}
@@ -19,7 +19,13 @@ class User < ApplicationRecord
               uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
-  
+  # @一意ユーザ名の正規表現(大文字小文字を区別しない、半角英数とアンダースコアのみ)
+  VALID_UNIQUE_NAME_REGEX = /\A[a-z0-9_]+\z/i
+  validates :unique_name, presence: true,                              # 空でないこと
+                          length: { in: 5..15 },                       # 長さ5～15文字であること
+                          format: { with: VALID_UNIQUE_NAME_REGEX },   # 一意ユーザ名の正規表現にマッチすること
+                          uniqueness: { case_sensitive: false }        # 大文字小文字に関わらず一意であること
+    
   # 渡された文字列のハッシュ値を返す
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -107,6 +113,11 @@ class User < ApplicationRecord
     # メールアドレスをすべて小文字にする
     def downcase_email
       self.email = email.downcase
+    end
+    
+    # 一意ユーザ名をすべて小文字にする
+    def downcase_unique_name
+      self.unique_name.downcase!
     end
 
     # 有効化トークンとダイジェストを作成および代入する
