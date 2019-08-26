@@ -20,8 +20,10 @@ class Micropost < ApplicationRecord
       #   自分がフォローしている人
       #   自分のマイクロポスト
       #   返信先が自分になっているマイクロポスト
-      Micropost.where("user_id        IN (:following_ids)
+      following_ids = "SELECT followed_id FROM relationships
+                       WHERE follower_id = :user_id"
+      Micropost.where("user_id        IN (#{following_ids})
                        OR user_id     =   :user_id
-                       OR in_reply_to =   :user_id"         , following_ids: user.following_ids, user_id: user_id)
+                       OR in_reply_to =   :user_id"         , user_id: user_id)
     end
 end
