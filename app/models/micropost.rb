@@ -6,6 +6,16 @@ class Micropost < ApplicationRecord
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }
   validate  :picture_size
+  
+  #お気に入りする
+  def favo(user)
+    favorites.create(user_id: user.id)
+  end
+  
+  #お気に入り解除
+  def unfavo(user)
+    likes.find_by(user_id: user.id).destroy
+  end
 
   private
 
