@@ -1,6 +1,7 @@
 class Micropost < ApplicationRecord
   belongs_to :user
   has_many :favorites, dependent: :destroy
+  has_many :favo_users, through: :favorites, source: :user
   default_scope -> { order(created_at: :desc) }
   mount_uploader :picture, PictureUploader
   validates :user_id, presence: true
@@ -15,6 +16,11 @@ class Micropost < ApplicationRecord
   #お気に入り解除
   def unfavo(user)
     likes.find_by(user_id: user.id).destroy
+  end
+  
+  # 現在のユーザーがお気に入りしてたらtrueを返す
+  def favo?(user)
+    favo_users.include?(user)
   end
 
   private
