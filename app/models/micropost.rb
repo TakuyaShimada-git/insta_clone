@@ -14,4 +14,16 @@ class Micropost < ApplicationRecord
         errors.add(:picture, "should be less than 5MB")
       end
     end
+    
+    def Micropost.including_replies(user_id)
+      # Micropostsテーブルから、下記のいずれか条件の投稿を取得する
+      #   自分がフォローしている人
+      #   自分のマイクロポスト
+      #   返信先が自分になっているマイクロポスト
+      following_ids = "SELECT followed_id FROM relationships
+                       WHERE follower_id = :user_id"
+      Micropost.where("user_id        IN (#{following_ids})
+                       OR user_id     =   :user_id
+                       OR in_reply_to =   :user_id"         , user_id: user_id)
+    end
 end
