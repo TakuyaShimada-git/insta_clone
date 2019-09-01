@@ -1,2 +1,1 @@
-<h1>Favorites#create</h1>
-<p>Find me in app/views/favorites/create.html.erb</p>
+$("#micropost-<%= @micropost.id %> .favorite").html("<%= escape_javascript(render "favorites/favorite", micropost: @micropost) %>");
