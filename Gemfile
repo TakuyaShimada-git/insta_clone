@@ -19,6 +19,8 @@ gem 'bootstrap-will_paginate', '1.0.0'
 #13章で追加
 gem 'carrierwave',             '1.2.2'
 gem 'mini_magick',             '4.7.0'
+#favorite機能用
+gem 'counter_culture', '~> 1.8'
 
 group :development, :test do
   gem 'sqlite3', '1.3.13'
