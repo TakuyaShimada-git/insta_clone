@@ -6,9 +6,9 @@ class CreateFavorites < ActiveRecord::Migration[5.1]
 
       t.timestamps
       
-      t.index :user_id
-      t.index :micropost_id
-      t.index [:user_id, :micropost_id], unique: true
+      t.index :favorites, :user_id
+      t.index :favorites, :micropost_id
+      t.index :favorites, [:user_id, :micropost_id], unique: true
     end
   end
 end
